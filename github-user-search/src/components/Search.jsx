@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { useState } from 'react';
+import { fetchUserData } from '../services/githubService';
 
 const Search = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [username, setUsername] = useState('');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -14,7 +14,7 @@ const Search = () => {
     setUser(null);
 
     try {
-      const data = await fetchUserData(searchTerm);
+      const data = await fetchUserData(username);
       setUser(data);
     } catch {
       setError(true);
@@ -28,21 +28,21 @@ const Search = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={username}
+          onChange={e => setUsername(e.target.value)}
           placeholder="Search GitHub username"
         />
         <button type="submit">Search</button>
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>Looks like we can't find the user.</p>}
+      {error && <p>Looks like we cant find the user</p>}
       {user && (
         <div>
           <img src={user.avatar_url} alt={user.login} width={100} />
-          <h3>{user.name || user.login}</h3>
+          <h3>{user.name}</h3>
           <p>{user.bio}</p>
-          <a href={user.html_url} target="_blank" rel="noreferrer">
+          <a href={user.html_url} target="_blank" rel="noopener noreferrer">
             View Profile
           </a>
         </div>
