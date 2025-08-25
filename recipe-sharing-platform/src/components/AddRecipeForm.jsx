@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 
-function AddRecipeForm() {
+export default function AddRecipeForm() {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [steps, setSteps] = useState("");
   const [errors, setErrors] = useState({});
 
-  // ✅ Validation function
   const validate = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
-    if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required (at least 2 items)";
+    if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required";
     if (!steps.trim()) newErrors.steps = "Preparation steps are required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -19,55 +18,60 @@ function AddRecipeForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form submitted:", { title, ingredients, steps });
-      // You could add logic to save recipe here
+      console.log({ title, ingredients, steps });
+      setTitle("");
+      setIngredients("");
+      setSteps("");
+      setErrors({});
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Add New Recipe</h2>
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
+      <h2 className="text-2xl font-bold mb-4 text-center">Add a New Recipe</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title */}
-        <div>
-          <label className="block mb-1 font-medium">Recipe Title</label>
+        <div className="flex flex-col md:flex-row md:items-center">
+          <label className="w-full md:w-1/3 font-semibold">Title:</label>
           <input
             type="text"
-            className="w-full border rounded p-2"
+            className="w-full md:w-2/3 p-2 border rounded"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
         </div>
+        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
 
         {/* Ingredients */}
-        <div>
-          <label className="block mb-1 font-medium">Ingredients</label>
+        <div className="flex flex-col md:flex-row md:items-center">
+          <label className="w-full md:w-1/3 font-semibold">Ingredients:</label>
           <textarea
-            className="w-full border rounded p-2"
-            rows="3"
+            className="w-full md:w-2/3 p-2 border rounded"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
           />
-          {errors.ingredients && <p className="text-red-500 text-sm">{errors.ingredients}</p>}
         </div>
+        {errors.ingredients && (
+          <p className="text-red-500 text-sm">{errors.ingredients}</p>
+        )}
 
         {/* Steps */}
-        <div>
-          <label className="block mb-1 font-medium">Preparation Steps</label>
+        <div className="flex flex-col md:flex-row md:items-center">
+          <label className="w-full md:w-1/3 font-semibold">Preparation Steps:</label>
           <textarea
-            className="w-full border rounded p-2"
-            rows="4"
+            className="w-full md:w-2/3 p-2 border rounded"
             value={steps}
             onChange={(e) => setSteps(e.target.value)}
           />
-          {errors.steps && <p className="text-red-500 text-sm">{errors.steps}</p>}
         </div>
+        {errors.steps && (
+          <p className="text-red-500 text-sm">{errors.steps}</p>
+        )}
 
         {/* Submit */}
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          className="w-full md:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           Submit Recipe
         </button>
@@ -75,5 +79,3 @@ function AddRecipeForm() {
     </div>
   );
 }
-
-export default AddRecipeForm;
