@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export function useAuth() {
-  // Mock authentication state for now
-  const [isAuthenticated] = useState(true); // change to false to test redirect
+  // Replace with real authentication logic if needed
+  const [isAuthenticated] = useState(true);
 
   return { isAuthenticated };
 }
