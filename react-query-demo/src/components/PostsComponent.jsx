@@ -1,18 +1,18 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const fetchPosts = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-  if (!res.ok) throw new Error("Network response was not ok");
-  return res.json();
+  const { data } = await axios.get("https://jsonplaceholder.typicode.com/posts");
+  return data;
 };
 
-function PostsComponent() {
+const PostsComponent = () => {
   const {
     data,
-    error,
     isLoading,
-    isFetching,
+    isError,
+    error,
     refetch,
   } = useQuery({
     queryKey: ["posts"],
@@ -23,18 +23,21 @@ function PostsComponent() {
     keepPreviousData: true,
   });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isLoading) return <p>Loading posts...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
 
   return (
     <div>
-      <h2>Posts</h2>
-      <button onClick={() => refetch()} disabled={isFetching}>
-        {isFetching ? "Refreshing..." : "Refetch Posts"}
+      <h2 className="text-xl font-bold mb-4">Posts</h2>
+      <button
+        onClick={() => refetch()}
+        className="px-4 py-2 bg-blue-500 text-white rounded mb-4"
+      >
+        Refetch Posts
       </button>
       <ul>
         {data.map((post) => (
-          <li key={post.id}>
+          <li key={post.id} className="mb-2">
             <strong>{post.title}</strong>
             <p>{post.body}</p>
           </li>
@@ -42,6 +45,6 @@ function PostsComponent() {
       </ul>
     </div>
   );
-}
+};
 
 export default PostsComponent;
